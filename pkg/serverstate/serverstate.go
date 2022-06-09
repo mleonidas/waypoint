@@ -134,6 +134,11 @@ type Interface interface {
 	ReleaseLatest(*pb.Ref_Application, *pb.Ref_Workspace) (*pb.Release, error)
 	ReleaseList(*pb.Ref_Application, ...ListOperationOption) ([]*pb.Release, error)
 
+	InfraPut(bool, *pb.Infra) error
+	InfraGet(*pb.Ref_Operation) (*pb.Infra, error)
+	InfraLatest(*pb.Ref_Application, *pb.Ref_Workspace) (*pb.Infra, error)
+	InfraList(*pb.Ref_Application, ...ListOperationOption) ([]*pb.Infra, error)
+
 	StatusReportPut(bool, *pb.StatusReport) error
 	StatusReportGet(*pb.Ref_Operation) (*pb.StatusReport, error)
 	StatusReportLatest(

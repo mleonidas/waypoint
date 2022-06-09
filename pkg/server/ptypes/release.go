@@ -49,3 +49,10 @@ func ValidateUpsertReleaseRequest(v *pb.UpsertReleaseRequest) error {
 		validation.Field(&v.Release, validation.Required),
 	))
 }
+
+// ValidateUpsertArtifactRequest
+func ValidateUpsertInfraRequest(v *pb.UpsertInfraRequest) error {
+	return validationext.Error(validation.ValidateStruct(v,
+		validation.Field(&v.Infrastructure, validation.Required),
+	))
+}

@@ -7578,6 +7578,69 @@
       },
       "description": "TargetApp targets an application in a specific workspace. With\nthis target type, you can still target specific deployments by\nappending `--\u003cdeployment id\u003e` to the hostname after registration."
     },
+    "hashicorp.waypoint.Infra": {
+      "type": "object",
+      "properties": {
+        "application": {
+          "$ref": "#/definitions/hashicorp.waypoint.Ref.Application",
+          "description": "The application that this build is part of."
+        },
+        "workspace": {
+          "$ref": "#/definitions/hashicorp.waypoint.Ref.Workspace",
+          "title": "The workspace that this exists in"
+        },
+        "sequence": {
+          "type": "string",
+          "format": "uint64",
+          "description": "The sequence number for this build."
+        },
+        "id": {
+          "type": "string",
+          "title": "id is the unique ID of the build"
+        },
+        "status": {
+          "$ref": "#/definitions/hashicorp.waypoint.Status",
+          "title": "status of the build"
+        },
+        "component": {
+          "$ref": "#/definitions/hashicorp.waypoint.Component",
+          "title": "component is the component that was used for this build"
+        },
+        "artifact": {
+          "$ref": "#/definitions/hashicorp.waypoint.Artifact",
+          "title": "artifact is the result of the build if the status.state == SUCCESS"
+        },
+        "labels": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "labels are the set of labels that are present on this build."
+        },
+        "template_data": {
+          "type": "string",
+          "format": "byte",
+          "title": "template data for HCL variables and template functions, json-encoded"
+        },
+        "job_id": {
+          "type": "string",
+          "description": "ID of the job that created this build. This may be empty."
+        },
+        "preload": {
+          "$ref": "#/definitions/hashicorp.waypoint.Infra.Preload",
+          "description": "Preload is information that is available via further queries but it\nsometimes pre-populated in the initial load (see the field docs for more\ninfo)."
+        }
+      }
+    },
+    "hashicorp.waypoint.Infra.Preload": {
+      "type": "object",
+      "properties": {
+        "job_data_source_ref": {
+          "$ref": "#/definitions/hashicorp.waypoint.Job.DataSource.Ref",
+          "description": "The ref that was used in the job to run this operation. This is\nalso accessible by querying the job via the job_id and should always\nmatch.\n\nThis may be null under multiple circumstances: (1) the job was\nmanually triggered with local data (no datasource) or (2) the job\nwas run in earlier versions of Waypoint before we tracked this or\n(3) the job hasn't yet loaded the data.\n\nThis is always pre-populated if it is exists."
+        }
+      }
+    },
     "hashicorp.waypoint.Instance": {
       "type": "object",
       "properties": {
@@ -9498,6 +9561,20 @@
         }
       }
     },
+    "hashicorp.waypoint.RunnerGetInfraConfigResponse": {
+      "type": "object",
+      "properties": {
+        "server_addr": {
+          "type": "string"
+        },
+        "server_tls": {
+          "type": "boolean"
+        },
+        "server_tls_skip_verify": {
+          "type": "boolean"
+        }
+      }
+    },
     "hashicorp.waypoint.RunnerJobStreamRequest.Ack": {
       "type": "object"
     },
@@ -10359,6 +10436,15 @@
       "properties": {
         "deployment": {
           "$ref": "#/definitions/hashicorp.waypoint.Deployment",
+          "title": "resulting object, you should replace this with what was sent in the request\nsince the update operation may touch up the input data (i.e. update\ntimestamps)"
+        }
+      }
+    },
+    "hashicorp.waypoint.UpsertInfraResponse": {
+      "type": "object",
+      "properties": {
+        "infrastructure": {
+          "$ref": "#/definitions/hashicorp.waypoint.Infra",
           "title": "resulting object, you should replace this with what was sent in the request\nsince the update operation may touch up the input data (i.e. update\ntimestamps)"
         }
       }

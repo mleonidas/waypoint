@@ -17,6 +17,7 @@ type Plugin struct {
 		Registry bool `hcl:"registry,optional"`
 		Platform bool `hcl:"deploy,optional"`
 		Releaser bool `hcl:"release,optional"`
+		Infra    bool `hcl:"infra,optional"`
 	} `hcl:"type,block"`
 
 	// Checksum is the SHA256 checksum to validate this plugin.
@@ -130,5 +131,6 @@ func (p *Plugin) typeMap() map[component.Type]*bool {
 		component.RegistryType:       &p.Type.Registry,
 		component.PlatformType:       &p.Type.Platform,
 		component.ReleaseManagerType: &p.Type.Releaser,
+		component.InfraType:          &p.Type.Infra,
 	}
 }

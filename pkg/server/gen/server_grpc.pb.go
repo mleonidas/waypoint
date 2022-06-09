@@ -234,6 +234,9 @@ type WaypointClient interface {
 	// RunnerGetDeploymentConfig is called by a runner for a deployment operation
 	// to determine the settings to use for a deployment.
 	RunnerGetDeploymentConfig(ctx context.Context, in *RunnerGetDeploymentConfigRequest, opts ...grpc.CallOption) (*RunnerGetDeploymentConfigResponse, error)
+	// RunnerGetInfraConfig is called by a runner for a deployment operation
+	// to determine the settings to use for a deployment.
+	RunnerGetInfraConfig(ctx context.Context, in *RunnerGetInfraConfigRequest, opts ...grpc.CallOption) (*RunnerGetInfraConfigResponse, error)
 	// EntrypointConfig is called to get the configuration for the entrypoint
 	// and also to get any potential updates.
 	//
@@ -265,6 +268,8 @@ type WaypointClient interface {
 	UpsertPushedArtifact(ctx context.Context, in *UpsertPushedArtifactRequest, opts ...grpc.CallOption) (*UpsertPushedArtifactResponse, error)
 	// UpsertDeployment updates or inserts a deployment.
 	UpsertDeployment(ctx context.Context, in *UpsertDeploymentRequest, opts ...grpc.CallOption) (*UpsertDeploymentResponse, error)
+	// UpsertInfra updates or inserts an infrastructure.
+	UpsertInfrastructure(ctx context.Context, in *UpsertInfraRequest, opts ...grpc.CallOption) (*UpsertInfraResponse, error)
 	// UpsertRelease updates or inserts a release.
 	UpsertRelease(ctx context.Context, in *UpsertReleaseRequest, opts ...grpc.CallOption) (*UpsertReleaseResponse, error)
 	// UpsertStatusReport updates or inserts a statusreport.
@@ -1092,6 +1097,15 @@ func (c *waypointClient) RunnerGetDeploymentConfig(ctx context.Context, in *Runn
 	return out, nil
 }
 
+func (c *waypointClient) RunnerGetInfraConfig(ctx context.Context, in *RunnerGetInfraConfigRequest, opts ...grpc.CallOption) (*RunnerGetInfraConfigResponse, error) {
+	out := new(RunnerGetInfraConfigResponse)
+	err := c.cc.Invoke(ctx, "/hashicorp.waypoint.Waypoint/RunnerGetInfraConfig", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *waypointClient) EntrypointConfig(ctx context.Context, in *EntrypointConfigRequest, opts ...grpc.CallOption) (Waypoint_EntrypointConfigClient, error) {
 	stream, err := c.cc.NewStream(ctx, &Waypoint_ServiceDesc.Streams[7], "/hashicorp.waypoint.Waypoint/EntrypointConfig", opts...)
 	if err != nil {
@@ -1246,6 +1260,15 @@ func (c *waypointClient) UpsertPushedArtifact(ctx context.Context, in *UpsertPus
 func (c *waypointClient) UpsertDeployment(ctx context.Context, in *UpsertDeploymentRequest, opts ...grpc.CallOption) (*UpsertDeploymentResponse, error) {
 	out := new(UpsertDeploymentResponse)
 	err := c.cc.Invoke(ctx, "/hashicorp.waypoint.Waypoint/UpsertDeployment", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *waypointClient) UpsertInfrastructure(ctx context.Context, in *UpsertInfraRequest, opts ...grpc.CallOption) (*UpsertInfraResponse, error) {
+	out := new(UpsertInfraResponse)
+	err := c.cc.Invoke(ctx, "/hashicorp.waypoint.Waypoint/UpsertInfrastructure", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1584,6 +1607,9 @@ type WaypointServer interface {
 	// RunnerGetDeploymentConfig is called by a runner for a deployment operation
 	// to determine the settings to use for a deployment.
 	RunnerGetDeploymentConfig(context.Context, *RunnerGetDeploymentConfigRequest) (*RunnerGetDeploymentConfigResponse, error)
+	// RunnerGetInfraConfig is called by a runner for a deployment operation
+	// to determine the settings to use for a deployment.
+	RunnerGetInfraConfig(context.Context, *RunnerGetInfraConfigRequest) (*RunnerGetInfraConfigResponse, error)
 	// EntrypointConfig is called to get the configuration for the entrypoint
 	// and also to get any potential updates.
 	//
@@ -1615,6 +1641,8 @@ type WaypointServer interface {
 	UpsertPushedArtifact(context.Context, *UpsertPushedArtifactRequest) (*UpsertPushedArtifactResponse, error)
 	// UpsertDeployment updates or inserts a deployment.
 	UpsertDeployment(context.Context, *UpsertDeploymentRequest) (*UpsertDeploymentResponse, error)
+	// UpsertInfra updates or inserts an infrastructure.
+	UpsertInfrastructure(context.Context, *UpsertInfraRequest) (*UpsertInfraResponse, error)
 	// UpsertRelease updates or inserts a release.
 	UpsertRelease(context.Context, *UpsertReleaseRequest) (*UpsertReleaseResponse, error)
 	// UpsertStatusReport updates or inserts a statusreport.
@@ -1859,6 +1887,9 @@ func (UnimplementedWaypointServer) RunnerJobStream(Waypoint_RunnerJobStreamServe
 func (UnimplementedWaypointServer) RunnerGetDeploymentConfig(context.Context, *RunnerGetDeploymentConfigRequest) (*RunnerGetDeploymentConfigResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RunnerGetDeploymentConfig not implemented")
 }
+func (UnimplementedWaypointServer) RunnerGetInfraConfig(context.Context, *RunnerGetInfraConfigRequest) (*RunnerGetInfraConfigResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RunnerGetInfraConfig not implemented")
+}
 func (UnimplementedWaypointServer) EntrypointConfig(*EntrypointConfigRequest, Waypoint_EntrypointConfigServer) error {
 	return status.Errorf(codes.Unimplemented, "method EntrypointConfig not implemented")
 }
@@ -1888,6 +1919,9 @@ func (UnimplementedWaypointServer) UpsertPushedArtifact(context.Context, *Upsert
 }
 func (UnimplementedWaypointServer) UpsertDeployment(context.Context, *UpsertDeploymentRequest) (*UpsertDeploymentResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpsertDeployment not implemented")
+}
+func (UnimplementedWaypointServer) UpsertInfrastructure(context.Context, *UpsertInfraRequest) (*UpsertInfraResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpsertInfrastructure not implemented")
 }
 func (UnimplementedWaypointServer) UpsertRelease(context.Context, *UpsertReleaseRequest) (*UpsertReleaseResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpsertRelease not implemented")
@@ -3242,6 +3276,24 @@ func _Waypoint_RunnerGetDeploymentConfig_Handler(srv interface{}, ctx context.Co
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Waypoint_RunnerGetInfraConfig_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RunnerGetInfraConfigRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WaypointServer).RunnerGetInfraConfig(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/hashicorp.waypoint.Waypoint/RunnerGetInfraConfig",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WaypointServer).RunnerGetInfraConfig(ctx, req.(*RunnerGetInfraConfigRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Waypoint_EntrypointConfig_Handler(srv interface{}, stream grpc.ServerStream) error {
 	m := new(EntrypointConfigRequest)
 	if err := stream.RecvMsg(m); err != nil {
@@ -3437,6 +3489,24 @@ func _Waypoint_UpsertDeployment_Handler(srv interface{}, ctx context.Context, de
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(WaypointServer).UpsertDeployment(ctx, req.(*UpsertDeploymentRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Waypoint_UpsertInfrastructure_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpsertInfraRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WaypointServer).UpsertInfrastructure(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/hashicorp.waypoint.Waypoint/UpsertInfrastructure",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WaypointServer).UpsertInfrastructure(ctx, req.(*UpsertInfraRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -3935,6 +4005,10 @@ var Waypoint_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Waypoint_RunnerGetDeploymentConfig_Handler,
 		},
 		{
+			MethodName: "RunnerGetInfraConfig",
+			Handler:    _Waypoint_RunnerGetInfraConfig_Handler,
+		},
+		{
 			MethodName: "WaypointHclFmt",
 			Handler:    _Waypoint_WaypointHclFmt_Handler,
 		},
@@ -3961,6 +4035,10 @@ var Waypoint_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpsertDeployment",
 			Handler:    _Waypoint_UpsertDeployment_Handler,
+		},
+		{
+			MethodName: "UpsertInfrastructure",
+			Handler:    _Waypoint_UpsertInfrastructure_Handler,
 		},
 		{
 			MethodName: "UpsertRelease",

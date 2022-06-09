@@ -106,6 +106,19 @@ type Hook struct {
 	OnFailure string   `hcl:"on_failure,optional"`
 }
 
+// Infra are the infrastructure settings
+type Infra struct {
+	Labels map[string]string `hcl:"labels,optional"`
+	Hooks  []*Hook           `hcl:"hook,block"`
+	Use    *Use              `hcl:"use,block"`
+
+	// Unused, see Build
+	WorkspaceScoped []*scopedStage `hcl:"workspace,block"`
+	LabelScoped     []*scopedStage `hcl:"label,block"`
+
+	ctx *hcl.EvalContext
+}
+
 func (h *Hook) ContinueOnFailure() bool {
 	return h.OnFailure == "continue"
 }
@@ -114,3 +127,4 @@ func (b *Build) hclContext() *hcl.EvalContext    { return b.ctx }
 func (b *Registry) hclContext() *hcl.EvalContext { return b.ctx }
 func (b *Deploy) hclContext() *hcl.EvalContext   { return b.ctx }
 func (b *Release) hclContext() *hcl.EvalContext  { return b.ctx }
+func (b *Infra) hclContext() *hcl.EvalContext    { return b.ctx }

@@ -10,6 +10,8 @@ app "web" {
     build {}
 
     deploy {}
+
+    infra {}
 }
 
 variable "bees" {

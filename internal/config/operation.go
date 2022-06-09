@@ -45,6 +45,10 @@ func (b *Release) Operation() *Operation {
 	return mapoperation(b, false)
 }
 
+func (b *Infra) Operation() *Operation {
+	return mapoperation(b, false)
+}
+
 // mapoperation takes a struct that is a superset of Operation and
 // maps it down to an Operation. This will panic if this fails.
 func mapoperation(input interface{}, req bool) *Operation {

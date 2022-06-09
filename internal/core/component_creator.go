@@ -120,6 +120,19 @@ var componentCreatorMap = map[component.Type]*componentCreator{
 			return a.config.Release(ctx)
 		},
 	},
+
+	component.InfraType: {
+		Type: component.InfraType,
+		UseType: func(a *App, ctx *hcl.EvalContext) (string, error) {
+			return a.config.InfraUse(ctx)
+		},
+		Labels: func(a *App, ctx *hcl.EvalContext) (map[string]string, error) {
+			return a.config.InfraLabels(ctx)
+		},
+		ConfigFunc: func(a *App, ctx *hcl.EvalContext) (interface{}, error) {
+			return a.config.Infra(ctx)
+		},
+	},
 }
 
 // Create creates the component of the given type.
@@ -150,6 +163,7 @@ func (cc *componentCreator) create(
 	// plugin and other things so we have to grab these first before we do
 	// anything else.
 	hclCtx, labels, err := cc.labels(hclCtx, app)
+	fmt.Println("labels labels: ", labels)
 	if err != nil {
 		return nil, err
 	}
@@ -158,6 +172,7 @@ func (cc *componentCreator) create(
 	if err != nil {
 		return nil, err
 	}
+
 	if useType == "" {
 		return nil, status.Errorf(codes.Unimplemented,
 			"no plugin type declared for type: %s", cc.Type.String())

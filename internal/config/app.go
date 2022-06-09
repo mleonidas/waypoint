@@ -26,6 +26,7 @@ type App struct {
 	BuildRaw   *hclBuild `hcl:"build,block"`
 	DeployRaw  *hclStage `hcl:"deploy,block"`
 	ReleaseRaw *hclStage `hcl:"release,block"`
+	InfraRaw   *hclStage `hcl:"infra,block"`
 
 	Body hcl.Body `hcl:",body"`
 
@@ -46,6 +47,7 @@ type hclApp struct {
 	BuildRaw   *hclBuild `hcl:"build,block"`
 	DeployRaw  *hclStage `hcl:"deploy,block"`
 	ReleaseRaw *hclStage `hcl:"release,block"`
+	InfraRaw   *hclStage `hcl:"infra,block"`
 
 	Runner *Runner `hcl:"runner,block"`
 
@@ -191,6 +193,28 @@ func (c *App) Build(ctx *hcl.EvalContext) (*Build, error) {
 	}
 
 	var b Build
+	if diag := gohcl.DecodeBody(body, finalizeContext(ctx), &b); diag.HasErrors() {
+		return nil, diag
+	}
+	b.ctx = ctx
+
+	return &b, nil
+}
+
+// Infra loads the Build section of the configuration.
+func (c *App) Infra(ctx *hcl.EvalContext) (*Infra, error) {
+	ctx = appendContext(c.ctx, ctx)
+
+	body := c.InfraRaw.Body
+	scope, err := scopeMatchStage(ctx, c.InfraRaw.WorkspaceScoped, c.InfraRaw.LabelScoped)
+	if err != nil {
+		return nil, err
+	}
+	if scope != nil {
+		body = scope.Body
+	}
+
+	var b Infra
 	if diag := gohcl.DecodeBody(body, finalizeContext(ctx), &b); diag.HasErrors() {
 		return nil, diag
 	}
@@ -346,6 +370,24 @@ func (c *App) ReleaseUse(ctx *hcl.EvalContext) (string, error) {
 	return useType, nil
 }
 
+// InfraUse returns the plugin use value
+func (c *App) InfraUse(ctx *hcl.EvalContext) (string, error) {
+	if c.DeployRaw == nil {
+		return "", nil
+	}
+
+	useType := c.InfraRaw.Use.Type
+	stage, err := scopeMatchStage(ctx, c.InfraRaw.WorkspaceScoped, c.InfraRaw.LabelScoped)
+	if err != nil {
+		return "", err
+	}
+	if stage != nil {
+		useType = stage.Use.Type
+	}
+
+	return useType, nil
+}
+
 // BuildLabels returns the labels for this stage.
 func (c *App) BuildLabels(ctx *hcl.EvalContext) (map[string]string, error) {
 	if c.BuildRaw == nil {
@@ -354,6 +396,16 @@ func (c *App) BuildLabels(ctx *hcl.EvalContext) (map[string]string, error) {
 
 	ctx = appendContext(c.ctx, ctx)
 	return labels(ctx, c.BuildRaw.Body)
+}
+
+// InfraLabels returns the labels for this stage.
+func (c *App) InfraLabels(ctx *hcl.EvalContext) (map[string]string, error) {
+	if c.InfraRaw == nil {
+		return nil, nil
+	}
+
+	ctx = appendContext(c.ctx, ctx)
+	return labels(ctx, c.InfraRaw.Body)
 }
 
 // RegistryLabels returns the labels for this stage.

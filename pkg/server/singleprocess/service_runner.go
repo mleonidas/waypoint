@@ -75,6 +75,42 @@ func (s *Service) RunnerGetDeploymentConfig(
 	}, nil
 }
 
+func (s *Service) RunnerGetInfraConfig(
+	ctx context.Context,
+	req *pb.RunnerGetInfraConfigRequest,
+) (*pb.RunnerGetInfraConfigResponse, error) {
+	// Get our server config
+	serverConfig, err := s.GetServerConfig(ctx, &emptypb.Empty{})
+	if err != nil {
+		return nil, errors.Wrapf(err, "failed to get server config to populate runner start job server addr")
+	}
+
+	cfg := serverConfig.Config
+
+	// If we have no config set yet, this is an error.
+	if cfg == nil {
+		return nil, status.Errorf(codes.Aborted,
+			"server configuration for deployment information not yet set.")
+	}
+
+	// If we have no advertise addresses, then we just send back empty values.
+	// This disables any entrypoint settings.
+	if len(cfg.AdvertiseAddrs) == 0 {
+		return &pb.RunnerGetInfraConfigResponse{}, nil
+	}
+
+	// Our addr for now is just the first one since we don't support
+	// multiple addresses yet. In the future we will want to support more
+	// advanced choicing.
+	addr := cfg.AdvertiseAddrs[0]
+
+	return &pb.RunnerGetInfraConfigResponse{
+		ServerAddr:          addr.Addr,
+		ServerTls:           addr.Tls,
+		ServerTlsSkipVerify: addr.TlsSkipVerify,
+	}, nil
+}
+
 func (s *Service) AdoptRunner(
 	ctx context.Context,
 	req *pb.AdoptRunnerRequest,

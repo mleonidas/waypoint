@@ -305,6 +305,11 @@ service Waypoint {
   // to determine the settings to use for a deployment.
   rpc RunnerGetDeploymentConfig(RunnerGetDeploymentConfigRequest) returns (RunnerGetDeploymentConfigResponse);
 
+
+  // RunnerGetInfraConfig is called by a runner for a deployment operation
+  // to determine the settings to use for a deployment.
+  rpc RunnerGetInfraConfig(RunnerGetInfraConfigRequest) returns (RunnerGetInfraConfigResponse);
+
   //----------------------------------------------------------------------
   // Entrypoint binary endpoints. These are all expected to be called by
   // the entrypoint binary only.
@@ -365,6 +370,9 @@ service Waypoint {
 
   // UpsertDeployment updates or inserts a deployment.
   rpc UpsertDeployment(UpsertDeploymentRequest) returns (UpsertDeploymentResponse);
+
+  // UpsertInfra updates or inserts an infrastructure.
+  rpc UpsertInfrastructure(UpsertInfraRequest) returns (UpsertInfraResponse);
 
   // UpsertRelease updates or inserts a release.
   rpc UpsertRelease(UpsertReleaseRequest) returns (UpsertReleaseResponse);
@@ -2680,6 +2688,15 @@ message RunnerGetDeploymentConfigResponse {
   bool server_tls_skip_verify = 3;
 }
 
+message RunnerGetInfraConfigRequest {}
+
+
+message RunnerGetInfraConfigResponse {
+  string server_addr = 1;
+  bool server_tls = 2;
+  bool server_tls_skip_verify = 3;
+}
+
 message GetRunnerRequest {
   // ID of the runner to request.
   string runner_id = 1;
@@ -4825,4 +4842,69 @@ message WaypointHclFmtRequest {
 
 message WaypointHclFmtResponse {
   bytes waypoint_hcl = 1;
+}
+
+message Infra {
+  // The application that this build is part of.
+  Ref.Application application = 6;
+
+  // The workspace that this exists in
+  Ref.Workspace workspace = 7;
+
+  // The sequence number for this build.
+  uint64 sequence = 8;
+
+  // id is the unique ID of the build
+  string id = 1;
+
+  // status of the build
+  Status status = 2;
+
+  // component is the component that was used for this build
+  Component component = 3;
+
+  // artifact is the result of the build if the status.state == SUCCESS
+  Artifact artifact = 4;
+
+  // labels are the set of labels that are present on this build.
+  map<string, string> labels = 5;
+
+  // template data for HCL variables and template functions, json-encoded
+  bytes template_data = 10;
+
+  // ID of the job that created this build. This may be empty.
+  string job_id = 9;
+
+  // Preload is information that is available via further queries but it
+  // sometimes pre-populated in the initial load (see the field docs for more
+  // info).
+  Preload preload = 11;
+
+  message Preload {
+    // The ref that was used in the job to run this operation. This is
+    // also accessible by querying the job via the job_id and should always
+    // match.
+    //
+    // This may be null under multiple circumstances: (1) the job was
+    // manually triggered with local data (no datasource) or (2) the job
+    // was run in earlier versions of Waypoint before we tracked this or
+    // (3) the job hasn't yet loaded the data.
+    //
+    // This is always pre-populated if it is exists.
+    Job.DataSource.Ref job_data_source_ref = 1;
+  }
+}
+
+message UpsertInfraRequest {
+  // infrastructure to upsert. If the id in the artifact is empty, then this
+  // will be an insert. Otherwise, this will be an update and if the ID
+  // isn't found, it will be an error.
+   Infra infrastructure = 1;
+}
+
+message UpsertInfraResponse {
+  // resulting object, you should replace this with what was sent in the request
+  // since the update operation may touch up the input data (i.e. update
+  // timestamps)
+  Infra infrastructure = 1;
 }
