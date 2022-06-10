@@ -9,6 +9,7 @@
 , go-bindata
 , go-changelog
 , go-mockery
+, go-delve
 , go-protobuf
 , go-protobuf-grpc
 , go-protobuf-grpc-gateway
@@ -54,6 +55,7 @@ mkShell rec {
     go-protobuf-json
     go-protobuf-swagger
     go-tools
+    go-delve
     go-mockery
     go-changelog
 

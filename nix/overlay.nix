@@ -19,6 +19,8 @@ final: prev: {
 
   go-tools = prev.callPackage ./go-tools.nix { };
 
+  go-delve = prev.callPackage ./go-delve.nix { };
+
   go-mockery = prev.callPackage ./go-mockery.nix { };
 
   go-changelog = prev.callPackage ./go-changelog.nix { };
