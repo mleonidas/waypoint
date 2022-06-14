@@ -175,7 +175,6 @@ func (a *App) startPlugin(
 ) (*plugin.Instance, error) {
 	log := a.logger.Named(strings.ToLower(typ.String()))
 
-	// Get the factory function for this type
 	fn := f.Func(n)
 	if fn == nil {
 		return nil, fmt.Errorf("unknown type: %q", n)

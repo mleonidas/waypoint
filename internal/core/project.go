@@ -79,6 +79,7 @@ func NewProject(ctx context.Context, os ...Option) (*Project, error) {
 			component.RegistryType:       plugin.BaseFactories[component.RegistryType],
 			component.PlatformType:       plugin.BaseFactories[component.PlatformType],
 			component.ReleaseManagerType: plugin.BaseFactories[component.ReleaseManagerType],
+			component.InfraType:          plugin.BaseFactories[component.InfraType],
 		},
 	}
 

@@ -123,6 +123,26 @@ func (c *App) PushBuild(ctx context.Context, op *pb.Job_PushOp) error {
 	return err
 }
 
+func (c *App) Infra(ctx context.Context, op *pb.Job_InfraOp) (*pb.Job_InfraResult, error) {
+	if op == nil {
+		op = &pb.Job_InfraOp{}
+	}
+
+	// Build our job
+	job := c.job()
+	job.Operation = &pb.Job_Infra{
+		Infra: op,
+	}
+
+	// Execute it
+	result, err := c.doJob(ctx, job)
+	if err != nil {
+		return nil, err
+	}
+
+	return result.Infra, nil
+}
+
 func (c *App) Deploy(ctx context.Context, op *pb.Job_DeployOp) (*pb.Job_DeployResult, error) {
 	if op == nil {
 		op = &pb.Job_DeployOp{}

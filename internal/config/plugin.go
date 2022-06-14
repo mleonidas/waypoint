@@ -63,6 +63,11 @@ func (c *Config) Plugins() []*Plugin {
 			result = trackPlugin(result, known, v.Use, component.ReleaseManagerType)
 			trackStages(component.ReleaseManagerType, v.WorkspaceScoped, v.LabelScoped)
 		}
+
+		if v := app.InfraRaw; v != nil {
+			result = trackPlugin(result, known, v.Use, component.InfraType)
+			trackStages(component.InfraType, v.WorkspaceScoped, v.LabelScoped)
+		}
 	}
 
 	return result

@@ -201,7 +201,7 @@ func (c *App) Build(ctx *hcl.EvalContext) (*Build, error) {
 	return &b, nil
 }
 
-// Infra loads the Build section of the configuration.
+// Infra loads the Infra section of the configuration.
 func (c *App) Infra(ctx *hcl.EvalContext) (*Infra, error) {
 	ctx = appendContext(c.ctx, ctx)
 
@@ -218,6 +218,7 @@ func (c *App) Infra(ctx *hcl.EvalContext) (*Infra, error) {
 	if diag := gohcl.DecodeBody(body, finalizeContext(ctx), &b); diag.HasErrors() {
 		return nil, diag
 	}
+
 	b.ctx = ctx
 
 	return &b, nil
@@ -372,7 +373,7 @@ func (c *App) ReleaseUse(ctx *hcl.EvalContext) (string, error) {
 
 // InfraUse returns the plugin use value
 func (c *App) InfraUse(ctx *hcl.EvalContext) (string, error) {
-	if c.DeployRaw == nil {
+	if c.InfraRaw == nil {
 		return "", nil
 	}
 

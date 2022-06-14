@@ -163,7 +163,7 @@ func (cc *componentCreator) create(
 	// plugin and other things so we have to grab these first before we do
 	// anything else.
 	hclCtx, labels, err := cc.labels(hclCtx, app)
-	fmt.Println("labels labels: ", labels)
+
 	if err != nil {
 		return nil, err
 	}

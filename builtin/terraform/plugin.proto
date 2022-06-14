@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package terraform;
+
+option go_package = "waypoint/builtin/terraform";
+
+import "any.proto";
+
+
+message Infrastructure {
+  string sandbox_url = 1;
+  string cluster_id = 2;
+  string cluster = 3;
+  opaqueany.Any resource_state = 4;
+}
+
+message TaskInfo {
+    string id = 1;
+}

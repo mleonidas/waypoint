@@ -27,6 +27,7 @@ import (
 	"github.com/hashicorp/waypoint/builtin/nomad/jobspec"
 	"github.com/hashicorp/waypoint/builtin/null"
 	"github.com/hashicorp/waypoint/builtin/pack"
+	"github.com/hashicorp/waypoint/builtin/terraform"
 	"github.com/hashicorp/waypoint/builtin/tfc"
 	"github.com/hashicorp/waypoint/builtin/vault"
 )
@@ -60,6 +61,7 @@ var (
 		"vault":                    vault.Options,
 		"terraform-cloud":          tfc.Options,
 		"null":                     null.Options,
+		"terraform":                terraform.Options,
 	}
 
 	// BaseFactories is the set of base plugin factories. This will include any

@@ -738,6 +738,12 @@ func Commands(
 				baseCommand: baseCommand,
 			}, nil
 		},
+
+		"infra": func() (cli.Command, error) {
+			return &InfraCommand{
+				baseCommand: baseCommand,
+			}, nil
+		},
 	}
 
 	// register our aliases

@@ -601,6 +601,29 @@ func (_m *WaypointServer) GetDeployment(_a0 context.Context, _a1 *gen.GetDeploym
 	return r0, r1
 }
 
+// GetInfra provides a mock function with given fields: _a0, _a1
+func (_m *WaypointServer) GetInfra(_a0 context.Context, _a1 *gen.GetInfraRequest) (*gen.Infra, error) {
+	ret := _m.Called(_a0, _a1)
+
+	var r0 *gen.Infra
+	if rf, ok := ret.Get(0).(func(context.Context, *gen.GetInfraRequest) *gen.Infra); ok {
+		r0 = rf(_a0, _a1)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*gen.Infra)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(context.Context, *gen.GetInfraRequest) error); ok {
+		r1 = rf(_a0, _a1)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
 // GetJob provides a mock function with given fields: _a0, _a1
 func (_m *WaypointServer) GetJob(_a0 context.Context, _a1 *gen.GetJobRequest) (*gen.Job, error) {
 	ret := _m.Called(_a0, _a1)
@@ -1127,6 +1150,29 @@ func (_m *WaypointServer) ListHostnames(_a0 context.Context, _a1 *gen.ListHostna
 
 	var r1 error
 	if rf, ok := ret.Get(1).(func(context.Context, *gen.ListHostnamesRequest) error); ok {
+		r1 = rf(_a0, _a1)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// ListInfra provides a mock function with given fields: _a0, _a1
+func (_m *WaypointServer) ListInfra(_a0 context.Context, _a1 *gen.ListInfraRequest) (*gen.ListInfraResponse, error) {
+	ret := _m.Called(_a0, _a1)
+
+	var r0 *gen.ListInfraResponse
+	if rf, ok := ret.Get(0).(func(context.Context, *gen.ListInfraRequest) *gen.ListInfraResponse); ok {
+		r0 = rf(_a0, _a1)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*gen.ListInfraResponse)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(context.Context, *gen.ListInfraRequest) error); ok {
 		r1 = rf(_a0, _a1)
 	} else {
 		r1 = ret.Error(1)
@@ -1881,8 +1927,8 @@ func (_m *WaypointServer) UpsertDeployment(_a0 context.Context, _a1 *gen.UpsertD
 	return r0, r1
 }
 
-// UpsertInfrastructure provides a mock function with given fields: _a0, _a1
-func (_m *WaypointServer) UpsertInfrastructure(_a0 context.Context, _a1 *gen.UpsertInfraRequest) (*gen.UpsertInfraResponse, error) {
+// UpsertInfra provides a mock function with given fields: _a0, _a1
+func (_m *WaypointServer) UpsertInfra(_a0 context.Context, _a1 *gen.UpsertInfraRequest) (*gen.UpsertInfraResponse, error) {
 	ret := _m.Called(_a0, _a1)
 
 	var r0 *gen.UpsertInfraResponse

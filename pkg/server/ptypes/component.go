@@ -175,6 +175,27 @@ func TestValidTask(t testing.T, src *pb.Task) *pb.Task {
 	return src
 }
 
+func TestValidInfra(t testing.T, src *pb.Infra) *pb.Infra {
+	t.Helper()
+
+	if src == nil {
+		src = &pb.Infra{}
+	}
+
+	require.NoError(t, mergo.Merge(src, &pb.Infra{
+		Application: &pb.Ref_Application{
+			Application: "a_test",
+			Project:     "p_test",
+		},
+		Workspace: &pb.Ref_Workspace{
+			Workspace: "default",
+		},
+		Status: testStatus(t),
+	}))
+
+	return src
+}
+
 func testStatus(t testing.T) *pb.Status {
 	pt := timestamppb.Now()
 

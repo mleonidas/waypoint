@@ -33,6 +33,7 @@ func (a *App) Infra(ctx context.Context, optFuncs ...InfraOption) (
 	if err != nil {
 		return nil, err
 	}
+
 	defer c.Close()
 
 	cr, err := componentCreatorMap[component.RegistryType].Create(ctx, a, nil)
@@ -142,15 +143,15 @@ func (op *infraOperation) Upsert(
 	client pb.WaypointClient,
 	msg proto.Message,
 ) (proto.Message, error) {
-	resp, err := client.UpsertInfrastructure(ctx, &pb.UpsertInfraRequest{
-		Infrastructure: msg.(*pb.Infra),
+	resp, err := client.UpsertInfra(ctx, &pb.UpsertInfraRequest{
+		Infra: msg.(*pb.Infra),
 	})
 
 	if err != nil {
 		return nil, err
 	}
 
-	return resp.Infrastructure, nil
+	return resp.Infra, nil
 }
 
 func (op *infraOperation) Do(ctx context.Context, log hclog.Logger, app *App, _ proto.Message) (interface{}, error) {

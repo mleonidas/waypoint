@@ -117,6 +117,7 @@ func New(opts ...Option) (*Runner, error) {
 			component.PlatformType:       plugin.BaseFactories[component.PlatformType],
 			component.ReleaseManagerType: plugin.BaseFactories[component.ReleaseManagerType],
 			component.TaskLauncherType:   plugin.BaseFactories[component.TaskLauncherType],
+			component.InfraType:          plugin.BaseFactories[component.InfraType],
 		},
 		stateCond: sync.NewCond(&sync.Mutex{}),
 	}

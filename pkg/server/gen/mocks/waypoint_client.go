@@ -828,6 +828,36 @@ func (_m *WaypointClient) GetDeployment(ctx context.Context, in *gen.GetDeployme
 	return r0, r1
 }
 
+// GetInfra provides a mock function with given fields: ctx, in, opts
+func (_m *WaypointClient) GetInfra(ctx context.Context, in *gen.GetInfraRequest, opts ...grpc.CallOption) (*gen.Infra, error) {
+	_va := make([]interface{}, len(opts))
+	for _i := range opts {
+		_va[_i] = opts[_i]
+	}
+	var _ca []interface{}
+	_ca = append(_ca, ctx, in)
+	_ca = append(_ca, _va...)
+	ret := _m.Called(_ca...)
+
+	var r0 *gen.Infra
+	if rf, ok := ret.Get(0).(func(context.Context, *gen.GetInfraRequest, ...grpc.CallOption) *gen.Infra); ok {
+		r0 = rf(ctx, in, opts...)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*gen.Infra)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(context.Context, *gen.GetInfraRequest, ...grpc.CallOption) error); ok {
+		r1 = rf(ctx, in, opts...)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
 // GetJob provides a mock function with given fields: ctx, in, opts
 func (_m *WaypointClient) GetJob(ctx context.Context, in *gen.GetJobRequest, opts ...grpc.CallOption) (*gen.Job, error) {
 	_va := make([]interface{}, len(opts))
@@ -1540,6 +1570,36 @@ func (_m *WaypointClient) ListHostnames(ctx context.Context, in *gen.ListHostnam
 
 	var r1 error
 	if rf, ok := ret.Get(1).(func(context.Context, *gen.ListHostnamesRequest, ...grpc.CallOption) error); ok {
+		r1 = rf(ctx, in, opts...)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// ListInfra provides a mock function with given fields: ctx, in, opts
+func (_m *WaypointClient) ListInfra(ctx context.Context, in *gen.ListInfraRequest, opts ...grpc.CallOption) (*gen.ListInfraResponse, error) {
+	_va := make([]interface{}, len(opts))
+	for _i := range opts {
+		_va[_i] = opts[_i]
+	}
+	var _ca []interface{}
+	_ca = append(_ca, ctx, in)
+	_ca = append(_ca, _va...)
+	ret := _m.Called(_ca...)
+
+	var r0 *gen.ListInfraResponse
+	if rf, ok := ret.Get(0).(func(context.Context, *gen.ListInfraRequest, ...grpc.CallOption) *gen.ListInfraResponse); ok {
+		r0 = rf(ctx, in, opts...)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*gen.ListInfraResponse)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(context.Context, *gen.ListInfraRequest, ...grpc.CallOption) error); ok {
 		r1 = rf(ctx, in, opts...)
 	} else {
 		r1 = ret.Error(1)
@@ -2568,8 +2628,8 @@ func (_m *WaypointClient) UpsertDeployment(ctx context.Context, in *gen.UpsertDe
 	return r0, r1
 }
 
-// UpsertInfrastructure provides a mock function with given fields: ctx, in, opts
-func (_m *WaypointClient) UpsertInfrastructure(ctx context.Context, in *gen.UpsertInfraRequest, opts ...grpc.CallOption) (*gen.UpsertInfraResponse, error) {
+// UpsertInfra provides a mock function with given fields: ctx, in, opts
+func (_m *WaypointClient) UpsertInfra(ctx context.Context, in *gen.UpsertInfraRequest, opts ...grpc.CallOption) (*gen.UpsertInfraResponse, error) {
 	_va := make([]interface{}, len(opts))
 	for _i := range opts {
 		_va[_i] = opts[_i]

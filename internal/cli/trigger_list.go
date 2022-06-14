@@ -119,6 +119,8 @@ func (c *TriggerListCommand) Run(args []string) int {
 			opStr = "push"
 		case *pb.Trigger_Deploy:
 			opStr = "deploy"
+		case *pb.Trigger_Infra:
+			opStr = "infra"
 		case *pb.Trigger_Destroy:
 			switch triggerOpType.Destroy.Target.(type) {
 			case *pb.Job_DestroyOp_Workspace:

@@ -6284,7 +6284,8 @@
         "BUILDER",
         "REGISTRY",
         "PLATFORM",
-        "RELEASEMANAGER"
+        "RELEASEMANAGER",
+        "INFRA"
       ],
       "default": "UNKNOWN",
       "description": "Supported component types, the values here MUST match the enum values\nin the Go sdk/component package exactly. A test in internal/server\nvalidates this."
@@ -7828,6 +7829,9 @@
         "watch_task": {
           "$ref": "#/definitions/hashicorp.waypoint.Job.WatchTaskOp"
         },
+        "infra": {
+          "$ref": "#/definitions/hashicorp.waypoint.Job.InfraOp"
+        },
         "state": {
           "$ref": "#/definitions/hashicorp.waypoint.Job.State",
           "title": "state of the job"
@@ -8171,6 +8175,22 @@
       },
       "title": "SSH private key auth"
     },
+    "hashicorp.waypoint.Job.InfraOp": {
+      "type": "object",
+      "properties": {
+        "disable_push": {
+          "type": "boolean"
+        }
+      }
+    },
+    "hashicorp.waypoint.Job.InfraResult": {
+      "type": "object",
+      "properties": {
+        "infra": {
+          "$ref": "#/definitions/hashicorp.waypoint.Infra"
+        }
+      }
+    },
     "hashicorp.waypoint.Job.InitOp": {
       "type": "object",
       "description": "InitOp triggers an init action for a project (the equivalent of `waypoint\ninit`). The job will fail if there is no data source configured for the\nproject. As with `waypoint init`, this operation is idempotent."
@@ -8357,6 +8377,9 @@
         },
         "watch_task": {
           "$ref": "#/definitions/hashicorp.waypoint.Job.WatchTaskResult"
+        },
+        "infra": {
+          "$ref": "#/definitions/hashicorp.waypoint.Job.InfraResult"
         }
       }
     },
@@ -8547,6 +8570,18 @@
           "items": {
             "$ref": "#/definitions/hashicorp.waypoint.Hostname"
           }
+        }
+      }
+    },
+    "hashicorp.waypoint.ListInfraResponse": {
+      "type": "object",
+      "properties": {
+        "infra": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/hashicorp.waypoint.Infra"
+          },
+          "description": "builds is the list of builds."
         }
       }
     },
@@ -10261,6 +10296,9 @@
         "status_report": {
           "$ref": "#/definitions/hashicorp.waypoint.Job.StatusReportOp"
         },
+        "infra": {
+          "$ref": "#/definitions/hashicorp.waypoint.Job.InfraOp"
+        },
         "workspace": {
           "$ref": "#/definitions/hashicorp.waypoint.Ref.Workspace",
           "description": "Defaults to the default workspace if unset."
@@ -10443,7 +10481,7 @@
     "hashicorp.waypoint.UpsertInfraResponse": {
       "type": "object",
       "properties": {
-        "infrastructure": {
+        "infra": {
           "$ref": "#/definitions/hashicorp.waypoint.Infra",
           "title": "resulting object, you should replace this with what was sent in the request\nsince the update operation may touch up the input data (i.e. update\ntimestamps)"
         }
