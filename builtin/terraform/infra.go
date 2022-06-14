@@ -36,25 +36,30 @@ func (i *Infra) Infrastructure(
 	sg := ui.StepGroup()
 	defer sg.Wait()
 
-	log.Debug("made it into infra plugin")
-	s := sg.Add("Initializing terraform infra...")
-	defer s.Abort()
+	tfInit := sg.Add("Initializing terraform infra...")
+	defer tfInit.Abort()
+
+	tfInit.Done()
+
+	tfAutoApply := sg.Add("Running terraform...")
+	defer tfAutoApply.Abort()
+
+	tfAutoApply.Done()
 
 	ulid, err := component.Id()
-
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to generate ULID: %s", err)
 	}
 
+	// TODO:(mleonidas): actually make terraform do things here now that we stage configured
+
 	infraId := fmt.Sprintf("%s-%s", src.App, ulid)
-	log.Debug(infraId)
 
 	if i.config.ModuleSrc == "" {
 		log.Debug("no module source configured")
 	}
-	result.Cluster = "test-cluster"
+	result.Cluster = fmt.Sprintf("test-cluster-%s", infraId)
 	result.ClusterId = "eks:something:somethign::"
-	s.Done()
 
 	return &result, nil
 }
