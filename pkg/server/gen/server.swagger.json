@@ -7618,18 +7618,21 @@
           },
           "description": "labels are the set of labels that are present on this build."
         },
+        "job_id": {
+          "type": "string",
+          "description": "ID of the job that created this build. This may be empty."
+        },
         "template_data": {
           "type": "string",
           "format": "byte",
           "title": "template data for HCL variables and template functions, json-encoded"
         },
-        "job_id": {
-          "type": "string",
-          "description": "ID of the job that created this build. This may be empty."
-        },
         "preload": {
           "$ref": "#/definitions/hashicorp.waypoint.Infra.Preload",
           "description": "Preload is information that is available via further queries but it\nsometimes pre-populated in the initial load (see the field docs for more\ninfo)."
+        },
+        "has_logs_plugin": {
+          "type": "boolean"
         },
         "infra_json": {
           "type": "string",

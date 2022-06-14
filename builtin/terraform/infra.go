@@ -31,25 +31,30 @@ func (i *Infra) Infrastructure(
 	src *component.Source,
 	ui terminal.UI,
 ) (*Infrastructure, error) {
-	var result Infrastructure
 
 	sg := ui.StepGroup()
+
 	defer sg.Wait()
 
-	tfInit := sg.Add("Initializing terraform infra...")
-	defer tfInit.Abort()
+	step := sg.Add("Initializing terraform infra...")
 
-	tfInit.Done()
+	defer func() {
+		if step != nil {
+			step.Abort()
+		}
+	}()
 
-	tfAutoApply := sg.Add("Running terraform...")
-	defer tfAutoApply.Abort()
+	// NOTE:(mleonidas): here is where we successfully terraform init
+	step.Done()
 
-	tfAutoApply.Done()
+	step = sg.Add("Running terraform...")
 
 	ulid, err := component.Id()
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to generate ULID: %s", err)
 	}
+
+	var result Infrastructure
 
 	// TODO:(mleonidas): actually make terraform do things here now that we stage configured
 
@@ -60,6 +65,13 @@ func (i *Infra) Infrastructure(
 	}
 	result.Cluster = fmt.Sprintf("test-cluster-%s", infraId)
 	result.ClusterId = "eks:something:somethign::"
+
+	step.Done()
+
+	sg.Wait()
+
+	ui.Output("terraform outputs: %s (%s)", result.ClusterId, result.Cluster,
+		terminal.WithSuccessStyle())
 
 	return &result, nil
 }
