@@ -4884,11 +4884,8 @@ message Infra {
   // component is the component that was used for this build
   Component component = 3;
 
-  // artifact is the result of the build if the status.state == SUCCESS
-  Artifact artifact = 4;
-
   // labels are the set of labels that are present on this build.
-  map<string, string> labels = 5;
+  map<string, string> labels = 4;
 
   // template data for HCL variables and template functions, json-encoded
   bytes template_data = 10;
